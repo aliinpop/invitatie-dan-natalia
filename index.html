@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Save the Date | 7 November 2026</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Inter:wght@300;400;600&display=swap');
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #eff6ff 0%, #bfdbfe 100%);
+            color: #334155;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px;
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(30, 58, 138, 0.08);
+            border: 1px solid #ffffff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Sleek top border accent */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, #93c5fd, #3b82f6);
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.6rem;
+            color: #1e3a8a; /* Deep modern blue */
+            margin: 0 0 10px 0;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .date-highlight {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #3b82f6;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 1.15rem;
+            font-weight: 300;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        p {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 15px; /* Reduced since button/footer are gone */
+            color: #475569;
+        }
+
+        .icon-wrapper {
+            margin-bottom: 25px;
+        }
+
+        .icon-wrapper svg {
+            width: 56px;
+            height: 56px;
+            fill: url(#blue-gradient);
+            filter: drop-shadow(0 4px 6px rgba(59, 130, 246, 0.15));
+        }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .container {
+            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- SVG Gradient Definition -->
+    <svg style="width:0;height:0;position:absolute;" aria-hidden="true" focusable="false">
+      <linearGradient id="blue-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#93c5fd" />
+        <stop offset="100%" stop-color="#3b82f6" />
+      </linearGradient>
+    </svg>
+
+    <div class="container">
+        <div class="icon-wrapper">
+            <!-- Mail/Invite Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M20,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6A2,2 0 0,0 20,4M20,18H4V8L12,13L20,8V18M20,6L12,11L4,6V6H20V6Z" />
+            </svg>
+        </div>
+        
+        <h1>Save the Date</h1>
+        <div class="date-highlight">7 November 2026</div>
+        <div class="subtitle">Our digital invitation is coming soon.</div>
+        
+        <p>We're currently preparing something wonderful. The final details are being wrapped up, and we can't wait to share them with you. Stay tuned!</p>
+    </div>
+</body>
+</html>
