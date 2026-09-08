@@ -1469,6 +1469,13 @@ folosind formularul de mai jos.</p>
       document.body.style.overflow = '';
       main.classList.add('revealed');
     }, 1100);
+
+    // Start background music (user gesture allows autoplay)
+    if (bgm) {
+      bgm.play().then(() => {
+        musicToggle.classList.remove('paused');
+      }).catch(() => { /* autoplay blocked; user can start it manually */ });
+    }
   }
 
   envelope.addEventListener('click', openInvitation);
