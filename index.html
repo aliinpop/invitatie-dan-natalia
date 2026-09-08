@@ -1082,10 +1082,10 @@
     <h1 class="hero-names reveal">Natalia <span class="amp">&amp;</span> Dan</h1>
 
     <div class="hero-divider reveal">
-      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+      <!-- <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
         <path d="M7 1 L8.5 5.5 L13.5 5.5 L9.5 8.5 L11 13 L7 10 L3 13 L4.5 8.5 L0.5 5.5 L5.5 5.5 Z"
               fill="rgba(201,168,76,0.6)" stroke="rgba(201,168,76,0.8)" stroke-width="0.5"/>
-      </svg>
+      </svg> -->
     </div>
 
     <p class="hero-date reveal">07 Noiembrie 2026</p>
@@ -1286,7 +1286,7 @@
             <rect x="21" y="32" width="10" height="16" fill="#C9A84C" opacity="0.6"/>
           </svg>
         </div>
-        <div class="detail-label">Biserica</div>
+        <div class="detail-label">Slujba de binecuvântare</div>
         <div class="detail-value">Pogorârea Sfântului Duh<small>Zalău · ora 16:30</small><span class="detail-map-hint">Vezi pe hartă</span></div>
       </a>
 
@@ -1453,6 +1453,7 @@
   const envelope = document.getElementById('envelope');
   const main     = document.getElementById('main');
   const bgm      = document.getElementById('bgm');
+  if (bgm) bgm.volume = 0.5;
   const musicToggle = document.getElementById('musicToggle');
 
   function openInvitation() {
@@ -1465,14 +1466,6 @@
       document.body.style.overflow = '';
       main.classList.add('revealed');
     }, 1100);
-
-    // Try to start background music (user gesture allows autoplay)
-    if (bgm) {
-      bgm.volume = 0.5;
-      bgm.play().then(() => {
-        musicToggle.classList.remove('paused');
-      }).catch(() => { /* no audio source provided yet */ });
-    }
   }
 
   envelope.addEventListener('click', openInvitation);
