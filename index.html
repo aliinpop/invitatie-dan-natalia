@@ -580,6 +580,8 @@
     @media (max-width: 520px) {
       .invite-events { grid-template-columns: 1fr; gap: 24px; }
       .parents-row { flex-direction: column; gap: 4px; }
+      .guest-radio-row { grid-template-columns: 1fr; }
+      .guest-radio-row label:nth-child(odd):last-child { grid-column: auto; }
     }
 
     /* ═══════════════════════════════════════════════════
@@ -784,6 +786,13 @@
     }
     .form-group input::placeholder { color: rgba(58,26,52,0.35); }
     .form-group input:focus { border-color: var(--velvet-mid); }
+    .form-group textarea {
+      width: 100%; padding: 13px 16px;
+      background: var(--cream-warm); border: 1px solid rgba(75,23,72,0.2); border-radius: 2px;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--text-dark);
+      outline: none; resize: vertical; transition: border-color 0.25s;
+    }
+    .form-group textarea:focus { border-color: var(--velvet-mid); }
 
     .attend-toggle { display: flex; gap: 12px; }
     .attend-toggle input { display: none; }
@@ -818,21 +827,65 @@
       padding: 4px 0;
     }
 
-    .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
-    .check-option {
-      display: flex; align-items: center; gap: 9px; cursor: pointer;
-      font-size: 0.82rem; color: var(--text-muted); padding: 10px 13px;
-      border: 1px solid rgba(75,23,72,0.15); border-radius: 2px; transition: all 0.2s; user-select: none;
+    .steppers-row { display: flex; gap: 24px; }
+    .stepper-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .stepper-label {
+      font-family: 'Cormorant Garamond', serif; font-size: 0.95rem;
+      letter-spacing: 0.04em; color: var(--text-muted);
     }
-    .check-option:hover { border-color: var(--velvet-mid); }
-    .check-option input { display: none; }
-    .check-box {
-      width: 14px; height: 14px; border: 1px solid rgba(75,23,72,0.3); border-radius: 1px;
-      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
-      transition: all 0.2s; font-size: 8px;
+
+    /* Per-guest cards (adults + children), built dynamically */
+    .guest-card {
+      background: var(--cream-warm);
+      border: 1px solid rgba(75,23,72,0.15);
+      border-radius: 2px;
+      padding: 16px;
+      margin-bottom: 12px;
+      animation: envFadeUp 0.35s ease;
     }
-    .check-option input:checked ~ .check-box { background: var(--velvet); border-color: var(--velvet); color: var(--gold-pale); }
-    .check-option input:checked ~ span { color: var(--text-dark); }
+    .guest-card-header {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; font-weight: 600;
+      color: var(--text-warm);
+      margin-bottom: 10px;
+    }
+    .guest-radio-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+    .guest-radio-row label {
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer; font-size: 0.78rem; color: var(--text-muted);
+      padding: 9px 12px;
+      border: 1px solid rgba(75,23,72,0.15); border-radius: 2px;
+      transition: all 0.2s; user-select: none;
+    }
+    /* when the row has an odd number of options, the trailing one spans both columns */
+    .guest-radio-row label:nth-child(odd):last-child { grid-column: 1 / -1; }
+    .guest-radio-row label:hover { border-color: var(--velvet-mid); }
+    .guest-radio-row input { display: none; }
+    .guest-radio-row .dot {
+      width: 13px; height: 13px;
+      border: 1.5px solid rgba(75,23,72,0.3);
+      border-radius: 50%; flex-shrink: 0; position: relative;
+    }
+    .guest-radio-row .dot::after {
+      content: ''; position: absolute; top: 2px; left: 2px;
+      width: 7px; height: 7px; border-radius: 50%;
+      background: transparent; transition: background 0.2s;
+    }
+    .guest-radio-row input:checked + .dot { border-color: var(--velvet); }
+    .guest-radio-row input:checked + .dot::after { background: var(--velvet); }
+    .guest-radio-row input:checked ~ span { color: var(--text-dark); }
+
+    .guest-name-input {
+      width: 100%; padding: 10px 12px; margin-bottom: 12px;
+      border: 1px solid rgba(75,23,72,0.2); border-radius: 2px;
+      font-family: 'Cormorant Garamond', serif; font-size: 1rem;
+      color: var(--text-dark); background: #FFFCF6; outline: none;
+    }
+    .guest-name-input:focus { border-color: var(--velvet-mid); }
 
     .submit-btn {
       width: 100%; padding: 16px; background: var(--velvet); color: var(--gold-pale);
@@ -1327,40 +1380,40 @@
         <div class="conditional-fields" id="conditionalFields">
 
           <div class="form-group">
-            <label>Număr de persoane (inclusiv dvs.)</label>
-            <div class="num-stepper">
-              <button type="button" class="num-btn" id="numMinus">−</button>
-              <div class="num-display" id="numDisplay">1</div>
-              <button type="button" class="num-btn" id="numPlus">+</button>
+            <label>Câți invitați?</label>
+            <div class="steppers-row">
+              <div class="stepper-col">
+                <span class="stepper-label">Adulți</span>
+                <div class="num-stepper">
+                  <button type="button" class="num-btn" data-target="adults" data-dir="-1">−</button>
+                  <div class="num-display" id="adultsDisplay">1</div>
+                  <button type="button" class="num-btn" data-target="adults" data-dir="1">+</button>
+                </div>
+                <input type="hidden" name="adults" id="adultsInput" value="1" />
+              </div>
+              <div class="stepper-col">
+                <span class="stepper-label">Copii</span>
+                <div class="num-stepper">
+                  <button type="button" class="num-btn" data-target="children" data-dir="-1">−</button>
+                  <div class="num-display" id="childrenDisplay">0</div>
+                  <button type="button" class="num-btn" data-target="children" data-dir="1">+</button>
+                </div>
+                <input type="hidden" name="children" id="childrenInput" value="0" />
+              </div>
             </div>
-            <input type="hidden" name="guests" id="guestsInput" value="1" />
           </div>
 
-          <div class="form-group">
-            <label>Preferințe alimentare</label>
-            <div class="check-grid">
-              <label class="check-option">
-                <input type="checkbox" name="dietary" value="Fără restricții" />
-                <span class="check-box">✓</span><span>Fără restricții</span>
-              </label>
-              <label class="check-option">
-                <input type="checkbox" name="dietary" value="Vegetarian" />
-                <span class="check-box">✓</span><span>Vegetarian</span>
-              </label>
-              <label class="check-option">
-                <input type="checkbox" name="dietary" value="Vegan" />
-                <span class="check-box">✓</span><span>Vegan</span>
-              </label>
-              <label class="check-option">
-                <input type="checkbox" name="dietary" value="Fără gluten" />
-                <span class="check-box">✓</span><span>Fără gluten</span>
-              </label>
-            </div>
-          </div>
+          <div id="adultsCards"></div>
+          <div id="childrenCards"></div>
 
           <div class="form-group">
             <label for="rsvp-song">O melodie pentru ringul de dans</label>
             <input id="rsvp-song" type="text" name="song" placeholder="Artist — Titlul piesei" />
+          </div>
+
+          <div class="form-group">
+            <label for="rsvp-notes">Alte mențiuni (opțional)</label>
+            <textarea id="rsvp-notes" name="notes" rows="3"></textarea>
           </div>
 
         </div>
@@ -1498,15 +1551,18 @@
   }, { threshold: 0.3 });
   document.querySelectorAll('.tl-item').forEach(item => tlObserver.observe(item));
 
-  const tlEndObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        document.getElementById('tlEnd').classList.add('visible');
-        tlEndObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.6 });
-  tlEndObserver.observe(document.getElementById('tlEnd'));
+  const tlEnd = document.getElementById('tlEnd');
+  if (tlEnd) {
+    const tlEndObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tlEnd.classList.add('visible');
+          tlEndObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.6 });
+    tlEndObserver.observe(tlEnd);
+  }
 
 
   // ═══════════════════════════════════════════════════════
@@ -1524,9 +1580,11 @@
   //   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   //   var d = JSON.parse(e.postData.contents);
   //   if (sheet.getLastRow() === 0)
-  //     sheet.appendRow(['Timestamp','Nume','Participă','Persoane','Preferințe','Melodie']);
+  //     sheet.appendRow(['Timestamp','Nume','Participă','Adulți','Copii','Meniuri adulți','Preferințe copii','Melodie','Mențiuni']);
   //   sheet.appendRow([new Date().toLocaleString(), d.name, d.attending,
-  //                    d.guests||'', d.dietary||'', d.song||'']);
+  //                    d.adults||'', d.children||'',
+  //                    JSON.stringify(d.adultMenus||[]), JSON.stringify(d.childPrefs||[]),
+  //                    d.song||'', d.notes||'']);
   //   return ContentService
   //     .createTextOutput(JSON.stringify({result:'success'}))
   //     .setMimeType(ContentService.MimeType.JSON);
@@ -1540,10 +1598,75 @@
   const submitBtn       = document.getElementById('submitBtn');
   const conditionalFlds = document.getElementById('conditionalFields');
   const attendRadios    = document.querySelectorAll('input[name="attending"]');
-  const numMinus        = document.getElementById('numMinus');
-  const numPlus         = document.getElementById('numPlus');
-  const numDisplay      = document.getElementById('numDisplay');
-  const guestsInput     = document.getElementById('guestsInput');
+  const adultsCardsEl   = document.getElementById('adultsCards');
+  const childrenCardsEl = document.getElementById('childrenCards');
+
+  // Stepper state
+  const steppers    = { adults: 1, children: 0 };
+  const stepperMins = { adults: 1, children: 0 };
+  const stepperMaxs = { adults: 20, children: 10 };
+
+  function buildAdultCards() {
+    const savedNames = {};
+    const savedMenus = {};
+    adultsCardsEl.querySelectorAll('input[type="text"]').forEach(el => { savedNames[el.name] = el.value; });
+    adultsCardsEl.querySelectorAll('input[type="radio"]:checked').forEach(el => { savedMenus[el.name] = el.value; });
+
+    adultsCardsEl.innerHTML = '';
+    for (let i = 1; i <= steppers.adults; i++) {
+      const card = document.createElement('div');
+      card.className = 'guest-card';
+      card.innerHTML = `
+        <div class="guest-card-header">Invitatul ${i}</div>
+        ${i > 1 ? `<input type="text" name="adult_${i}_name" class="guest-name-input" placeholder="Nume" />` : ''}
+        <div class="guest-radio-row">
+          <label><input type="radio" name="adult_${i}_menu" value="normal" /><span class="dot"></span><span>Normal</span></label>
+          <label><input type="radio" name="adult_${i}_menu" value="vegetarian" /><span class="dot"></span><span>Vegetarian</span></label>
+          <label><input type="radio" name="adult_${i}_menu" value="vegan" /><span class="dot"></span><span>Vegan</span></label>
+          <label><input type="radio" name="adult_${i}_menu" value="fara-lactoza" /><span class="dot"></span><span>Fără lactoză</span></label>
+          <label><input type="radio" name="adult_${i}_menu" value="fara-gluten" /><span class="dot"></span><span>Fără gluten</span></label>
+        </div>`;
+      adultsCardsEl.appendChild(card);
+
+      if (i > 1 && savedNames[`adult_${i}_name`]) {
+        card.querySelector(`input[name="adult_${i}_name"]`).value = savedNames[`adult_${i}_name`];
+      }
+      const savedMenu = savedMenus[`adult_${i}_menu`];
+      if (savedMenu) {
+        const radio = card.querySelector(`input[name="adult_${i}_menu"][value="${savedMenu}"]`);
+        if (radio) radio.checked = true;
+      }
+    }
+  }
+
+  function buildChildCards() {
+    childrenCardsEl.innerHTML = '';
+    for (let i = 1; i <= steppers.children; i++) {
+      const card = document.createElement('div');
+      card.className = 'guest-card';
+      card.innerHTML = `
+        <div class="guest-card-header">Copilul ${i}</div>
+        <div class="guest-radio-row">
+          <label><input type="radio" name="child_${i}_pref" value="full_menu" /><span class="dot"></span><span>Meniu complet copii</span></label>
+          <label><input type="radio" name="child_${i}_pref" value="child_seat" /><span class="dot"></span><span>Doar scaun pentru copil</span></label>
+        </div>`;
+      childrenCardsEl.appendChild(card);
+    }
+  }
+
+  document.querySelectorAll('.num-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.target;
+      const dir    = parseInt(btn.dataset.dir);
+      steppers[target] = Math.max(stepperMins[target], Math.min(stepperMaxs[target], steppers[target] + dir));
+
+      document.getElementById(target + 'Display').textContent = steppers[target];
+      document.getElementById(target + 'Input').value = steppers[target];
+
+      if (target === 'adults')   buildAdultCards();
+      if (target === 'children') buildChildCards();
+    });
+  });
 
   function checkReady() {
     const name = rsvpForm.elements['name'].value.trim();
@@ -1555,17 +1678,9 @@
   attendRadios.forEach(r => r.addEventListener('change', () => {
     const yes = rsvpForm.elements['attending'].value === 'yes';
     conditionalFlds.classList.toggle('visible', yes);
+    if (yes) buildAdultCards();
     checkReady();
   }));
-
-  let guestCount = 1;
-  function updateGuests(delta) {
-    guestCount = Math.max(1, Math.min(20, guestCount + delta));
-    numDisplay.textContent = guestCount;
-    guestsInput.value      = guestCount;
-  }
-  numMinus.addEventListener('click', () => updateGuests(-1));
-  numPlus.addEventListener ('click', () => updateGuests(+1));
 
   rsvpForm.addEventListener('submit', async e => {
     e.preventDefault();
@@ -1573,15 +1688,34 @@
     submitBtn.textContent = 'Se trimite…';
 
     const attending = rsvpForm.elements['attending'].value;
-    const dietary   = [...rsvpForm.querySelectorAll('input[name="dietary"]:checked')]
-                        .map(c => c.value).join(', ');
+
+    const adultMenus = [];
+    const childPrefs = [];
+    if (attending === 'yes') {
+      for (let i = 1; i <= steppers.adults; i++) {
+        const sel = rsvpForm.querySelector(`input[name="adult_${i}_menu"]:checked`);
+        adultMenus.push({
+          adult: i,
+          name: i === 1 ? rsvpForm.elements['name'].value.trim()
+                        : (rsvpForm.querySelector(`input[name="adult_${i}_name"]`)?.value?.trim() || ''),
+          menu: sel ? sel.value : ''
+        });
+      }
+      for (let i = 1; i <= steppers.children; i++) {
+        const sel = rsvpForm.querySelector(`input[name="child_${i}_pref"]:checked`);
+        childPrefs.push({ child: i, pref: sel ? sel.value : '' });
+      }
+    }
 
     const payload = {
-      name:     rsvpForm.elements['name'].value.trim(),
+      name:       rsvpForm.elements['name'].value.trim(),
       attending,
-      guests:   attending === 'yes' ? guestsInput.value              : '',
-      dietary:  attending === 'yes' ? dietary                        : '',
-      song:     attending === 'yes' ? (rsvpForm.elements['song']?.value?.trim() || '') : '',
+      adults:     attending === 'yes' ? steppers.adults   : '',
+      children:   attending === 'yes' ? steppers.children : '',
+      adultMenus,
+      childPrefs,
+      song:       attending === 'yes' ? (rsvpForm.elements['song']?.value?.trim() || '') : '',
+      notes:      attending === 'yes' ? (rsvpForm.elements['notes']?.value?.trim() || '') : '',
     };
 
     try {
