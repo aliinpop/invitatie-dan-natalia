@@ -131,7 +131,7 @@
     .envelope-flap {
       position: absolute;
       top: 0; left: 0;
-      width: 100%; height: 45%;
+      width: 100%; height: 57%;
       transform-origin: 50% 0%;
       transform-style: preserve-3d;
       backface-visibility: hidden;
@@ -143,11 +143,11 @@
       position: absolute;
       left: 50%; top: 76%;
       transform: translate(-50%, -50%);
-      width: 22%;
+      width: 30%;
       z-index: 4;
       transition: opacity 1s ease 0.1s, transform 1s ease 0.1s;
     }
-    .wax-seal svg { width: 100%; height: 100%; display: block; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4)); }
+    .wax-seal svg { width: 100%; height: 100%; display: block; }
 
     /* Opening state */
     @keyframes flapOpen {
@@ -898,7 +898,7 @@
 
   <div class="env-top">
     <!-- <p class="env-sub">Vă invităm cu drag</p> -->
-    <p class="env-monogram">Natalia &amp; Dan</p>
+    <!-- <p class="env-monogram">Natalia &amp; Dan</p> -->
   </div>
 
   <div class="envelope" id="envelope">
@@ -911,18 +911,24 @@
             <stop offset="55%" stop-color="#48174A"/>
             <stop offset="100%" stop-color="#2C0C30"/>
           </linearGradient>
+          <linearGradient id="velvetBottomFlap" x1="0" y1="220" x2="0" y2="120" gradientUnits="userSpaceOnUse">
+            <stop offset="0%"  stop-color="#3A1038"/>
+            <stop offset="100%" stop-color="#210A22"/>
+          </linearGradient>
           <filter id="velvetGrainBody" x="-20%" y="-20%" width="140%" height="140%">
             <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="11" result="fineNoise"/>
-            <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="11" result="cloudNoise"/>
-            <feColorMatrix in="fineNoise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.3 0" result="fineAlpha"/>
-            <feColorMatrix in="cloudNoise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0" result="cloudAlpha"/>
+            <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="11" result="cloudNoise"/>
+            <feColorMatrix in="fineNoise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.15 0" result="fineAlpha"/>
+            <feColorMatrix in="cloudNoise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.3 0" result="cloudAlpha"/>
             <feMerge result="mottling"><feMergeNode in="cloudAlpha"/><feMergeNode in="fineAlpha"/></feMerge>
             <feComposite in="mottling" in2="SourceGraphic" operator="in" result="grain"/>
             <feBlend in="SourceGraphic" in2="grain" mode="soft-light"/>
           </filter>
         </defs>
         <rect x="4" y="4" width="292" height="212" rx="6" fill="url(#velvetBody)" filter="url(#velvetGrainBody)" stroke="rgba(201,168,76,0.6)" stroke-width="1.5" vector-effect="non-scaling-stroke"/>
-        <path d="M4 92 L150 132 L296 92" stroke="rgba(201,168,76,0.22)" stroke-width="1" fill="none" vector-effect="non-scaling-stroke"/>
+        <!-- lower flap, folded in behind the main flap -->
+        <path d="M4 216 L150 105 L296 216 Z" fill="url(#velvetBottomFlap)" stroke="rgba(201,168,76,0.35)" stroke-width="1" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+        <path d="M24 198 L150 118 L276 198" stroke="rgba(201,168,76,0.15)" stroke-width="1" fill="none" vector-effect="non-scaling-stroke"/>
         <rect x="14" y="14" width="272" height="192" rx="3" fill="none" stroke="rgba(201,168,76,0.18)" stroke-width="0.8" vector-effect="non-scaling-stroke"/>
       </svg>
     </div>
@@ -938,30 +944,44 @@
           </linearGradient>
           <filter id="velvetGrainFlap" x="-20%" y="-20%" width="140%" height="140%">
             <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="4" result="fineNoise"/>
-            <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" seed="4" result="cloudNoise"/>
-            <feColorMatrix in="fineNoise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.3 0" result="fineAlpha"/>
-            <feColorMatrix in="cloudNoise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0" result="cloudAlpha"/>
+            <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="4" result="cloudNoise"/>
+            <feColorMatrix in="fineNoise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.15 0" result="fineAlpha"/>
+            <feColorMatrix in="cloudNoise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.3 0" result="cloudAlpha"/>
             <feMerge result="mottling"><feMergeNode in="cloudAlpha"/><feMergeNode in="fineAlpha"/></feMerge>
             <feComposite in="mottling" in2="SourceGraphic" operator="in" result="grain"/>
             <feBlend in="SourceGraphic" in2="grain" mode="soft-light"/>
           </filter>
         </defs>
         <path d="M4 4 L296 4 L150 96 Z" fill="url(#velvetFlap)" filter="url(#velvetGrainFlap)" stroke="rgba(201,168,76,0.7)" stroke-width="1.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
-        <path d="M22 12 L150 80 L278 12" stroke="rgba(201,168,76,0.28)" stroke-width="1" fill="none" vector-effect="non-scaling-stroke"/>
       </svg>
       <div class="wax-seal">
-        <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 140 70" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <radialGradient id="gSeal" cx="34" cy="30" r="48" gradientUnits="userSpaceOnUse">
-              <stop offset="0%"  stop-color="#F5E4A8"/>
-              <stop offset="45%" stop-color="#C9A84C"/>
-              <stop offset="100%" stop-color="#8A6A20"/>
-            </radialGradient>
+            <!-- true bump-mapped deboss: blur the letter alpha into a smooth
+                 bump, then light it from the upper-left like the flap's own
+                 velvet sheen, so every curve gets continuous shading instead
+                 of a flat offset copy -->
+            <filter id="paperEmboss" x="-30%" y="-60%" width="160%" height="260%" color-interpolation-filters="sRGB">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="1.4" result="blur"/>
+              <feDiffuseLighting in="blur" surfaceScale="-3.2" diffuseConstant="1.15" lighting-color="#ffffff" result="diffuse">
+                <feDistantLight azimuth="235" elevation="55"/>
+              </feDiffuseLighting>
+              <feComposite in="diffuse" in2="SourceGraphic" operator="in" result="diffuseClip"/>
+              <feSpecularLighting in="blur" surfaceScale="-3.2" specularConstant="0.55" specularExponent="14" lighting-color="#ffffff" result="specular">
+                <feDistantLight azimuth="235" elevation="55"/>
+              </feSpecularLighting>
+              <feComposite in="specular" in2="SourceGraphic" operator="in" result="specularClip"/>
+              <feMerge result="lit">
+                <feMergeNode in="diffuseClip"/>
+                <feMergeNode in="specularClip"/>
+              </feMerge>
+              <feBlend in="lit" in2="SourceGraphic" mode="soft-light"/>
+            </filter>
           </defs>
-          <circle cx="40" cy="40" r="36" fill="url(#gSeal)" stroke="rgba(58,10,52,0.4)" stroke-width="1.5"/>
-          <circle cx="40" cy="40" r="30" fill="none" stroke="rgba(58,10,52,0.22)" stroke-width="1"/>
-          <text x="40" y="35" text-anchor="middle" font-family="Playfair Display, serif" font-style="italic" font-size="17" fill="#3A1A34">N</text>
-          <text x="40" y="55" text-anchor="middle" font-family="Playfair Display, serif" font-style="italic" font-size="17" fill="#3A1A34">D</text>
+          <g font-family="'Great Vibes', cursive" text-anchor="middle" fill="#8A6A20" filter="url(#paperEmboss)">
+            <text x="46" y="47" font-size="56">N</text>
+            <text x="90" y="40" font-size="40" transform="rotate(-6 90 40)">D</text>
+          </g>
         </svg>
       </div>
     </div>
