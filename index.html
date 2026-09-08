@@ -141,9 +141,9 @@
 
     .wax-seal {
       position: absolute;
-      left: 50%; top: 76%;
+      left: 50%; top: 88%;
       transform: translate(-50%, -50%);
-      width: 30%;
+      width: 36%;
       z-index: 4;
       transition: opacity 1s ease 0.1s, transform 1s ease 0.1s;
     }
@@ -955,33 +955,13 @@
         <path d="M4 4 L296 4 L150 96 Z" fill="url(#velvetFlap)" filter="url(#velvetGrainFlap)" stroke="rgba(201,168,76,0.7)" stroke-width="1.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
       </svg>
       <div class="wax-seal">
-        <svg viewBox="0 0 140 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <!-- true bump-mapped deboss: blur the letter alpha into a smooth
-                 bump, then light it from the upper-left like the flap's own
-                 velvet sheen, so every curve gets continuous shading instead
-                 of a flat offset copy -->
-            <filter id="paperEmboss" x="-30%" y="-60%" width="160%" height="260%" color-interpolation-filters="sRGB">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="1.4" result="blur"/>
-              <feDiffuseLighting in="blur" surfaceScale="-3.2" diffuseConstant="1.15" lighting-color="#ffffff" result="diffuse">
-                <feDistantLight azimuth="235" elevation="55"/>
-              </feDiffuseLighting>
-              <feComposite in="diffuse" in2="SourceGraphic" operator="in" result="diffuseClip"/>
-              <feSpecularLighting in="blur" surfaceScale="-3.2" specularConstant="0.55" specularExponent="14" lighting-color="#ffffff" result="specular">
-                <feDistantLight azimuth="235" elevation="55"/>
-              </feSpecularLighting>
-              <feComposite in="specular" in2="SourceGraphic" operator="in" result="specularClip"/>
-              <feMerge result="lit">
-                <feMergeNode in="diffuseClip"/>
-                <feMergeNode in="specularClip"/>
-              </feMerge>
-              <feBlend in="lit" in2="SourceGraphic" mode="soft-light"/>
-            </filter>
-          </defs>
-          <g font-family="'Great Vibes', cursive" text-anchor="middle" fill="#8A6A20" filter="url(#paperEmboss)">
-            <text x="46" y="47" font-size="56">N</text>
-            <text x="90" y="40" font-size="40" transform="rotate(-6 90 40)">D</text>
-          </g>
+        <svg viewBox="0 0 60 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M30 4 L54 13 L54 33 C54 44, 43 51, 30 53 C17 51, 6 44, 6 33 L6 13 Z"
+                fill="rgba(75,23,72,0.35)" stroke="rgba(201,168,76,0.5)" stroke-width="1.2"/>
+          <path d="M30 9 L48 16 L48 33 C48 42, 39 47, 30 49 C21 47, 12 42, 12 33 L12 16 Z"
+                fill="none" stroke="rgba(201,168,76,0.22)" stroke-width="0.8"/>
+          <text x="30" y="27" text-anchor="middle" font-family="Playfair Display, serif" font-style="italic" font-size="13" fill="rgba(232,201,106,0.85)">N</text>
+          <text x="30" y="43" text-anchor="middle" font-family="Playfair Display, serif" font-style="italic" font-size="13" fill="rgba(232,201,106,0.85)">D</text>
         </svg>
       </div>
     </div>
