@@ -59,7 +59,7 @@
         linear-gradient(160deg, #170618 0%, #2A0A2E 40%, #200820 70%, #130514 100%);
     }
     #envelope-scene.opening { pointer-events: none; }
-    #envelope-scene.hidden { opacity: 0; transition: opacity 1.2s ease; }
+    #envelope-scene.hidden { opacity: 0; transition: opacity 0.35s ease; }
 
     .particle {
       position: absolute;
@@ -182,8 +182,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      opacity: 0;
-      animation: envFadeUpCenter 1.8s ease forwards 3.4s;
+      opacity: 1;
+      transform: translate(-50%, 0);
     }
     .env-hint {
       font-size: 0.58rem;
@@ -968,7 +968,7 @@
   </div>
 
   <div class="env-bottom">
-    <p class="env-hint">Atinge plicul pentru a-l deschide</p>
+    <p class="env-hint">Apasă pentru a deschide</p>
     <div class="env-hint-line"></div>
   </div>
 </div>
@@ -1202,7 +1202,7 @@
   <section class="details-section">
     <div style="text-align:center">
       <!-- <p class="section-label reveal">Informații utile</p> -->
-      <h2 class="section-title reveal">Ziua Nuntii</h2>
+      <h2 class="section-title reveal">Ziua Nunții</h2>
       <div class="section-rule reveal"></div>
     </div>
 
@@ -1405,13 +1405,13 @@
   function openInvitation() {
     scene.classList.add('opening');
 
-    setTimeout(() => { scene.classList.add('hidden'); }, 3000);
+    setTimeout(() => { scene.classList.add('hidden'); }, 1500);
 
     setTimeout(() => {
       scene.style.display = 'none';
       document.body.style.overflow = '';
       main.classList.add('revealed');
-    }, 4350);
+    }, 850);
 
     // Try to start background music (user gesture allows autoplay)
     if (bgm) {
