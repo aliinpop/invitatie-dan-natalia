@@ -1036,12 +1036,10 @@
 
   <!-- Background music -->
   <!--
-    Adaugă o piesă instrumentală romantică (mp3) într-un folder "audio" lângă acest fișier,
-    de exemplu: audio/muzica-instrumentala.mp3, apoi actualizează sursa de mai jos.
     Muzica pornește automat după ce invitatul deschide plicul (gest necesar pentru autoplay).
   -->
   <audio id="bgm" loop preload="none">
-    <source src="audio/muzica-instrumentala.mp3" type="audio/mpeg" />
+    <source src="https://invite.weddingstogo.ro/wp-content/uploads/wedding-ceremony-music-romantic-love-sentimental-piano-background-277973-1.mp3" type="audio/mpeg" />
   </audio>
   <button id="musicToggle" class="paused" aria-label="Pornește / oprește muzica" title="Muzică">
     <svg viewBox="0 0 20 20" fill="var(--gold-pale)">
@@ -1102,31 +1100,31 @@
 
   <!-- ── INVITATION CARD ───────────────────────────────── -->
   <section class="invite-section">
-    <div class="invite-card reveal">
+    <div class="invite-card">
 
-      <svg class="invite-shield" width="56" height="54" viewBox="0 0 60 58" fill="none" aria-hidden="true">
+      <svg class="invite-shield reveal reveal-slow" width="56" height="54" viewBox="0 0 60 58" fill="none" aria-hidden="true">
         <path d="M30 4 L54 13 L54 33 C54 44, 43 51, 30 53 C17 51, 6 44, 6 33 L6 13 Z"
               fill="none" stroke="var(--velvet)" stroke-width="1.4"/>
         <text x="30" y="27" text-anchor="middle" font-family="Playfair Display, serif" font-style="italic" font-size="13" fill="var(--velvet)">N</text>
         <text x="30" y="43" text-anchor="middle" font-family="Playfair Display, serif" font-style="italic" font-size="13" fill="var(--velvet)">D</text>
       </svg>
 
-      <p class="invite-lead">Noi,</p>
-      <p class="invite-names-script">Natalia <span class="amp">&amp;</span> Dan</p>
+      <p class="invite-lead reveal reveal-slow">Noi,</p>
+      <p class="invite-names-script reveal reveal-slow">Natalia <span class="amp">&amp;</span> Dan</p>
 
-      <p class="invite-formal">Sub privirile emoționate ale părinților,</p>
-      <div class="parents-row">
+      <p class="invite-formal reveal reveal-slow">Sub privirile emoționate ale părinților,</p>
+      <div class="parents-row reveal reveal-slow">
         <span>Oțet Pavel și Loredana</span>
         <span>Șandor Crăciun și Lucia</span>
       </div>
 
-      <p class="invite-formal">A prietenilor de suflet și părinților spirituali,</p>
-      <div class="parents-row">
+      <p class="invite-formal reveal reveal-slow">A prietenilor de suflet și părinților spirituali,</p>
+      <div class="parents-row reveal reveal-slow">
         <span>Barta Szabolcs și Oana</span>
         <span>Țiriac Răzvan și Bianca</span>
       </div>
 
-      <p class="invite-bucurie">Avem bucuria de a vă invita la celebrarea căsătoriei noastre</p>
+      <p class="invite-bucurie reveal reveal-slow">Avem bucuria de a vă invita la celebrarea căsătoriei noastre</p>
 
       <!-- <p class="invite-big-date">07 Noiembrie 2026</p> -->
 
@@ -1530,8 +1528,15 @@
   //  SCROLL REVEAL
   // ═══════════════════════════════════════════════════════
   const revealObserver = new IntersectionObserver((entries) => {
+    // entries that cross the threshold together get a small staggered
+    // delay so grouped text appears one after another, not all at once
+    // (.reveal-slow sections get a wider gap between each line)
+    let stagger = 0;
     entries.forEach(entry => {
       if (entry.isIntersecting) {
+        const step = entry.target.classList.contains('reveal-slow') ? 0.55 : 0.12;
+        entry.target.style.transitionDelay = (stagger * step) + 's';
+        stagger++;
         entry.target.classList.add('visible');
         revealObserver.unobserve(entry.target);
       }
