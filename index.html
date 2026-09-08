@@ -1405,13 +1405,13 @@
   function openInvitation() {
     scene.classList.add('opening');
 
-    setTimeout(() => { scene.classList.add('hidden'); }, 1500);
+    setTimeout(() => { scene.classList.add('hidden'); }, 5000);
 
     setTimeout(() => {
       scene.style.display = 'none';
       document.body.style.overflow = '';
       main.classList.add('revealed');
-    }, 850);
+    }, 1100);
 
     // Try to start background music (user gesture allows autoplay)
     if (bgm) {
