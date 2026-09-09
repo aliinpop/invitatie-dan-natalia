@@ -551,6 +551,31 @@
     .calendar-section .cd-num    { color: var(--cream); }
     .calendar-section .cd-label  { color: var(--gold); opacity: 0.75; }
 
+    .add-calendar-wrap { text-align: center; margin-top: 32px; }
+    .add-calendar-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 13px 26px;
+      border: 1px solid rgba(201,168,76,0.6);
+      border-radius: 2px;
+      color: var(--gold);
+      text-decoration: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      transition: background 0.3s ease, color 0.3s ease;
+      cursor: pointer;
+    }
+    .add-calendar-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .add-calendar-btn:hover {
+      background: var(--gold);
+      color: var(--velvet-deep);
+    }
+    .add-calendar-btn:hover svg { stroke: var(--velvet-deep); }
+
     .invite-events {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1206,6 +1231,20 @@
         <div class="cd-block"><span class="cd-num" id="cdMinutes">–</span><span class="cd-label">Minute</span></div>
         <div class="cd-block"><span class="cd-num" id="cdSeconds">–</span><span class="cd-label">Secunde</span></div>
       </div>
+
+      <div class="add-calendar-wrap reveal">
+        <a href="#" id="addToCalendarBtn" class="add-calendar-btn" download="Nunta-Natalia-Dan.ics">
+          <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="16" rx="2"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+            <line x1="8" y1="3" x2="8" y2="7"/>
+            <line x1="16" y1="3" x2="16" y2="7"/>
+            <line x1="12" y1="14" x2="12" y2="18"/>
+            <line x1="10" y1="16" x2="14" y2="16"/>
+          </svg>
+          Adaugă în calendar
+        </a>
+      </div>
     </div>
   </section>
 
@@ -1288,7 +1327,7 @@
           </svg>
         </div>
         <div class="detail-label">Slujba de binecuvântare</div>
-        <div class="detail-value">Pogorârea Sfântului Duh<small>Zalău · ora 16:30</small><span class="detail-map-hint">Vezi pe hartă</span></div>
+        <div class="detail-value">Biserica Pogorârea Sfântului Duh<small>Zalău · ora 16:30</small><span class="detail-map-hint">Vezi pe hartă</span></div>
       </a>
 
       <a class="detail-card reveal" href="https://maps.app.goo.gl/WQHg1MzyFxfhAoTZ9" target="_blank" rel="noopener noreferrer">
@@ -1524,6 +1563,38 @@ folosind formularul de mai jos.</p>
     }
     tick();
     setInterval(tick, 1000);
+  })();
+
+
+  // ═══════════════════════════════════════════════════════
+  //  ADD TO CALENDAR (.ics — works for Apple/iPhone Calendar,
+  //  Google Calendar, Outlook, etc.)
+  // ═══════════════════════════════════════════════════════
+  (function () {
+    const btn = document.getElementById('addToCalendarBtn');
+    if (!btn) return;
+
+    const esc = s => String(s).replace(/([,;])/g, '\\$1');
+
+    const ics = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Natalia si Dan//Nunta 2026//RO',
+      'CALSCALE:GREGORIAN',
+      'BEGIN:VEVENT',
+      'UID:natalia-dan-nunta-2026@weddingstogo.ro',
+      'DTSTAMP:20260101T000000Z',
+      'DTSTART:20261107T163000',
+      'DTEND:20261108T020000',
+      'SUMMARY:' + esc('Nunta Natalia & Dan'),
+      'DESCRIPTION:' + esc('Slujba de binecuvântare: Biserica Pogorârea Sfântului Duh, Zalău, ora 16:30') + '\\n' +
+                       esc('Petrecerea: Brilliant Parc, sala Grand Ballroom, Zalău, ora 18:00'),
+      'LOCATION:' + esc('Brilliant Parc, Zalău'),
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ].join('\r\n');
+
+    btn.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
   })();
 
 
