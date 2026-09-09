@@ -575,6 +575,16 @@
       color: var(--velvet-deep);
     }
     .add-calendar-btn:hover svg { stroke: var(--velvet-deep); }
+    .add-calendar-alt {
+      display: block;
+      margin-top: 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      color: rgba(245,228,168,0.5);
+      text-decoration: underline;
+    }
+    .add-calendar-alt:hover { color: var(--gold); }
 
     .invite-events {
       display: grid;
@@ -1233,7 +1243,7 @@
       </div>
 
       <div class="add-calendar-wrap reveal">
-        <a href="#" id="addToCalendarBtn" class="add-calendar-btn" download="Nunta-Natalia-Dan.ics">
+        <a href="#" id="addToCalendarBtn" class="add-calendar-btn" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="1.6" aria-hidden="true">
             <rect x="3" y="5" width="18" height="16" rx="2"/>
             <line x1="3" y1="10" x2="21" y2="10"/>
@@ -1242,8 +1252,9 @@
             <line x1="12" y1="14" x2="12" y2="18"/>
             <line x1="10" y1="16" x2="14" y2="16"/>
           </svg>
-          Adaugă în calendar
+          Adaugă în Google Calendar
         </a>
+        <!-- <a href="nunta-natalia-dan.ics" class="add-calendar-alt">sau descarcă pentru Apple / Outlook</a> -->
       </div>
     </div>
   </section>
@@ -1567,34 +1578,27 @@ folosind formularul de mai jos.</p>
 
 
   // ═══════════════════════════════════════════════════════
-  //  ADD TO CALENDAR (.ics — works for Apple/iPhone Calendar,
-  //  Google Calendar, Outlook, etc.)
+  //  ADD TO GOOGLE CALENDAR
+  //  (the .ics link next to it covers Apple Calendar / Outlook)
   // ═══════════════════════════════════════════════════════
   (function () {
     const btn = document.getElementById('addToCalendarBtn');
     if (!btn) return;
 
-    const esc = s => String(s).replace(/([,;])/g, '\\$1');
+    const details =
+      'Slujba de binecuvântare: Biserica Pogorârea Sfântului Duh, Zalău, ora 16:30\n' +
+      'Petrecerea: Brilliant Parc, sala Grand Ballroom, Zalău, ora 18:00';
 
-    const ics = [
-      'BEGIN:VCALENDAR',
-      'VERSION:2.0',
-      'PRODID:-//Natalia si Dan//Nunta 2026//RO',
-      'CALSCALE:GREGORIAN',
-      'BEGIN:VEVENT',
-      'UID:natalia-dan-nunta-2026@weddingstogo.ro',
-      'DTSTAMP:20260101T000000Z',
-      'DTSTART:20261107T163000',
-      'DTEND:20261108T020000',
-      'SUMMARY:' + esc('Nunta Natalia & Dan'),
-      'DESCRIPTION:' + esc('Slujba de binecuvântare: Biserica Pogorârea Sfântului Duh, Zalău, ora 16:30') + '\\n' +
-                       esc('Petrecerea: Brilliant Parc, sala Grand Ballroom, Zalău, ora 18:00'),
-      'LOCATION:' + esc('Brilliant Parc, Zalău'),
-      'END:VEVENT',
-      'END:VCALENDAR'
-    ].join('\r\n');
+    const params = new URLSearchParams({
+      action:   'TEMPLATE',
+      text:     'Nunta Natalia & Dan',
+      dates:    '20261107T163000/20261108T020000',
+      details:  details,
+      location: 'Brilliant Parc, Zalău',
+      ctz:      'Europe/Bucharest'
+    });
 
-    btn.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
+    btn.href = 'https://calendar.google.com/calendar/render?' + params.toString();
   })();
 
 
